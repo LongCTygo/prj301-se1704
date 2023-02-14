@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Insert Category</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" type="text/css" href="style.css">
+    </head>
+    <body>
+
+    <form action="ControllerCategory" method="post">
+        <input type="hidden" name="go" value="insertCategory">
+        <table>
+            <tr>
+                <td><label for="cateName">Category Name</label></td>
+                <td><input type="text" name="cateName" id="cateName"></td>
+            </tr>
+            <tr>
+                <td><label for="status">Status</label></td>
+                <td><input type="radio" name="status" id="status" value="1" checked>Enable
+                    <input type="radio" name="status" id="status" value="0"> Disable
+                </td>
+            </tr>
+            <tr>
+                <td><input type="submit" value="Insert Category" name="submit" ></td>
+                <td><input type="reset" value="Reset"></td>
+            </tr>
+        </table>
+    </form>
+    </body>
+</html>

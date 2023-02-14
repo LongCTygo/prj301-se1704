@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<!--
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit this template
+-->
+<html>
+    <head>
+        <title>Insert Product</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" type="text/css" href="style.css">
+    </head>
+    <body>
+        <form action="ControllerProduct" method="post">
+            <input type="hidden" name="go" value="insertProduct">
+            <table>
+                <tr>
+                    <td><label for="pid">Pid</label></td>
+                    <td><input type="text" name="pid" id="pid"></td>
+                </tr>
+                <tr>
+                    <td><label for="pname">Pname</label></td>
+                    <td><input type="text" name="pname" id="pname"></td>
+                </tr>
+                <tr>
+                    <td><label for="quantity">Quantity</label></td>
+                    <td><input type="text" name="quantity" id="quantity"></td>
+                </tr>
+                <tr>
+                    <td><label for="price">Price</label></td>
+                    <td><input type="text" name="price" id="price"></td>
+                </tr>
+                <tr>
+                    <td><label for="image">Image</label></td>
+                    <td><input type="text" name="image" id="image"></td>
+                </tr>
+                <tr>
+                    <td><label for="description">Description</label></td>
+                    <td><input type="text" name="description" id="description"></td>
+                </tr>
+                <tr>
+                    <td><label for="status">Status</label></td>
+                    <td><input type="radio" name="status" id="status" value="1" checked>Enable
+                        <input type="radio" name="status" id="status" value="0">Disable</td>
+                </tr>
+                <tr>
+                    <td>Category:</td>
+                    <td><select id="CateID" name="CateID">
+                            <option value="1">Apple</option>
+                            <option value="2">SamSung</option>  
+                            <option value="3">LG</option>
+                        </select></td>
+                </tr>
+                <tr>
+                    <td><input type="submit" value="Insert Product" name="submit" ></td>
+                    <td><input type="reset" value="Reset"></td>
+                </tr>
+            </table>
+        </form>
+    </body>
+</html>
