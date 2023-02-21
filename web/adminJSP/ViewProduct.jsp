@@ -1,22 +1,23 @@
 <%-- 
     Document   : ViewProduct
-    Created on : Feb 14, 2023, 11:48:28 AM
+    Created on : Feb 16, 2023, 8:05:09 AM
     Author     : ADMIN
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page import="java.util.Vector,display.ProductDisplay"%>
 <!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <title>View Product</title>
     </head>
     <body>
-        <%@page import="dao.DAOProduct,entity.Product,java.util.Vector,java.sql.ResultSet"%>
         <%
-            DAOProduct dao = new DAOProduct();
-            ResultSet rs = dao.getData("select * from Product as a join Category as b on a.cateID = b.cateID");
+            Vector<ProductDisplay> vector = (Vector<ProductDisplay>) request.getAttribute("data");
+            String title = (String) request.getAttribute("title");
         %>
+        <div>Hello</div>
         <table border=\"1\">
             <caption>Customer List</caption>
             <tr>
@@ -31,20 +32,21 @@
                 <th>Update</th>
                 <th>Delete</th>
             </tr>
-            <%while(rs.next()){%>
+            <% for (ProductDisplay temp : vector){%>
             <tr>
-                <td><%=rs.getString(1)%></td>
-                <td><%=rs.getString(10)%></td>
-                <td><%=rs.getString(2)%></td>
-                <td><%=rs.getString(3)%></td>
-                <td><%=rs.getString(4)%></td>
-                <td><img src="<%=rs.getString(5)%>" width="100" height=150></td>
-                <td><%=rs.getString(6)%></td>
-                <td><%=(rs.getInt(7) == 1 ? "Enable" : "Disable")%></td>
-                <td><a href="ViewProduct.jsp?go=delete&id=<%=rs.getString(1)%>">Update</a></td>
-                <td><a href="ViewProduct.jsp?go=delete&id=<%=rs.getString(1)%>">Delete</a></td>
+                <td><%=temp.getPid()%></td>
+                <td><%=temp.getCate()%></td>
+                <td><%=temp.getPname()%></td>
+                <td><%=temp.getQuantity()%></td>
+                <td><%=temp.getPrice()%></td>
+                <td><img src="<%=temp.getImage()%>" width="100" height=150></td>
+                <td><%=temp.getDescription()%></td>
+                <td><%=(temp.getStatus() == 1 ? "Enable" : "Disable")%></td>
+                <td><a href="ProductController?go=update&id=<%=temp.getPid()%>&cateid=<%=temp.getCid()%>">Update</a></td>
+                <td><a href="ProductController?go=delete&id=<%=temp.getPid()%>&cateid=<%=temp.getCid()%>">Delete</a></td>
             </tr>
             <%}%>
-            </table>
+        </table>
+
     </body>
 </html>
