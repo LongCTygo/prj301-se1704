@@ -52,7 +52,7 @@ public class ControllerAdmin extends HttpServlet {
                 String admin = request.getParameter("admin");
                 String password = request.getParameter("password");
                 Admin ad = new Admin(admin, password);
-                int n = dao.addAdmin(ad);
+                int n = dao.add(ad);
                 response.sendRedirect("ControllerAdmin");
             }
             if (go.equals("listAll")) {

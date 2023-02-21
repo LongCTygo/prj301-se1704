@@ -17,7 +17,7 @@
             Vector<ProductDisplay> vector = (Vector<ProductDisplay>) request.getAttribute("data");
             String title = (String) request.getAttribute("title");
         %>
-        <div>Hello</div>
+        <div><%=title%></div>
         <table border=\"1\">
             <caption>Customer List</caption>
             <tr>

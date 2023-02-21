@@ -4,12 +4,10 @@
  */
 package mvcController;
 
-import controller.ControllerProduct;
 import dao.DAOCategory;
 import dao.DAOProduct;
 import display.ProductDisplay;
 import entity.Category;
-import entity.Product;
 import jakarta.servlet.RequestDispatcher;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -18,18 +16,14 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.Vector;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
  * @author ADMIN
  */
-@WebServlet(name = "ProductController", urlPatterns = {"/ProductController"})
-public class ProductController extends HttpServlet {
+@WebServlet(name = "ClientController", urlPatterns = {"/ClientController"})
+public class ClientController extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -45,6 +39,7 @@ public class ProductController extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try ( PrintWriter out = response.getWriter()) {
             DAOProduct dao = new DAOProduct();
+            DAOCategory daoCat = new DAOCategory();
             String go = request.getParameter("go");
             System.out.println(go);
             if (go == null) {
@@ -53,39 +48,30 @@ public class ProductController extends HttpServlet {
             if (go.equals("listAll")) {
                 String sql = "select * from Product as a join Category as b on a.cateID = b.cateID";
                 Vector<ProductDisplay> vector = dao.getDisplay(sql);
+                //Cat list
+                Vector<Category> catList = daoCat.getAll("SELECT * from Category");
                 String titleTable = "List of Product";
                 request.setAttribute("data", vector);
                 request.setAttribute("title", titleTable);
-                dispatch(request, response, "/adminJSP/ViewProduct.jsp");
+                request.setAttribute("dataMenu", catList);
+                dispatch(request, response, "/client/index.jsp");
             }
-            if (go.equals("update")) {
-                String submit = request.getParameter("submit");
-                if (submit == null) {
-                    String pid = request.getParameter("id");
-                    String cateID = request.getParameter("cateid");
-                    int cid = Integer.parseInt(cateID);
-                    String sql = "SELECT * FROM Product WHERE pid = '" + pid + "'";
-                    Vector<Product> vector = dao.getAll(sql);
-                    Product pro = vector.get(0);
-                    Vector<Category> cateData = new DAOCategory().getAll("SELECT * from Category");
-                    request.setAttribute("data", pro);
-                    request.setAttribute("cateId", cid);
-                    request.setAttribute("cateData", cateData);
-                    dispatch(request, response, "/adminJSP/UpdateProduct.jsp");
-                } else {
-                    String pid = request.getParameter("pid"), pname = request.getParameter("pname");
-                    int quantity = Integer.parseInt(request.getParameter("quantity"));
-                    double price = Double.parseDouble(request.getParameter("price"));
-                    String image = request.getParameter("image"), description = request.getParameter("description");
-                    int status = Integer.parseInt(request.getParameter("status")), cateID = Integer.parseInt(request.getParameter("CateID"));
-                    Product pr = new Product(pid, pname, quantity, price, image, description, status, cateID);
-                    int n = dao.update(pr);
-                    dispatch(request, response, "client/ViewProduct.jsp");
-                }
+            if (go.equals("display")){
+                int cid = new Integer(request.getParameter("cid"));
+                String sql = "select * from Product as a join Category as b on a.cateID = b.cateID"
+                        + "WHERE cid = '" + cid + "'";
+                Vector<ProductDisplay> vector = dao.getDisplay(sql);
+                //Cat list
+                Vector<Category> catList = daoCat.getAll("SELECT * from Category");
+                String titleTable = "List of Product";
+                request.setAttribute("data", vector);
+                request.setAttribute("title", titleTable);
+                request.setAttribute("dataMenu", catList);
+                dispatch(request, response, "/client/index.jsp");
             }
         }
     }
-
+    
     void dispatch(HttpServletRequest request, HttpServletResponse response, String url) 
             throws ServletException, IOException {
         //call jsp
