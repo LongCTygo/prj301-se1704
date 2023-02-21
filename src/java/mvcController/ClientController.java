@@ -49,30 +49,36 @@ public class ClientController extends HttpServlet {
                 String sql = "select * from Product as a join Category as b on a.cateID = b.cateID";
                 Vector<ProductDisplay> vector = dao.getDisplay(sql);
                 //Cat list
-                Vector<Category> catList = daoCat.getAll("SELECT * from Category");
-                String titleTable = "List of Product";
-                request.setAttribute("data", vector);
-                request.setAttribute("title", titleTable);
-                request.setAttribute("dataMenu", catList);
-                dispatch(request, response, "/client/index.jsp");
+                sendData(dao, daoCat, request, response, sql);
             }
-            if (go.equals("display")){
+            if (go.equals("display")) {
                 int cid = new Integer(request.getParameter("cid"));
-                String sql = "select * from Product as a join Category as b on a.cateID = b.cateID"
-                        + "WHERE cid = '" + cid + "'";
-                Vector<ProductDisplay> vector = dao.getDisplay(sql);
-                //Cat list
-                Vector<Category> catList = daoCat.getAll("SELECT * from Category");
-                String titleTable = "List of Product";
-                request.setAttribute("data", vector);
-                request.setAttribute("title", titleTable);
-                request.setAttribute("dataMenu", catList);
-                dispatch(request, response, "/client/index.jsp");
+                String sql = "select * from Product as a join Category as b on a.cateID = b.cateID "
+                        + "WHERE a.cateID = '" + cid + "'";
+                sendData(dao, daoCat, request, response, sql);
+            }
+            if (go.equals("search")) {
+                String pname = request.getParameter("pname");
+                request.setAttribute("searchValue", pname);
+                String sql = "select * from Product as a join Category as b on a.cateID = b.cateID "
+                        + "WHERE a.Pname like '%" + pname + "%'";
+                sendData(dao, daoCat, request, response, sql);
             }
         }
     }
-    
-    void dispatch(HttpServletRequest request, HttpServletResponse response, String url) 
+
+    void sendData(DAOProduct dao, DAOCategory daoCat, HttpServletRequest request, HttpServletResponse response, String sql) throws ServletException, IOException {
+        Vector<ProductDisplay> vector = dao.getDisplay(sql);
+        //Cat list
+        Vector<Category> catList = daoCat.getAll("SELECT * from Category");
+        String titleTable = "List of Product";
+        request.setAttribute("data", vector);
+        request.setAttribute("title", titleTable);
+        request.setAttribute("dataMenu", catList);
+        dispatch(request, response, "/client/index.jsp");
+    }
+
+    void dispatch(HttpServletRequest request, HttpServletResponse response, String url)
             throws ServletException, IOException {
         //call jsp
         RequestDispatcher dispatch
